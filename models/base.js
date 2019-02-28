@@ -18,11 +18,8 @@ const sequelize = new Sequelize(
 
 const db = {};
 
-
-
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-
 
 db.User = User(sequelize, Sequelize);
 db.Chatroom = Chatroom(sequelize, Sequelize);

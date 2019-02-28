@@ -10,8 +10,18 @@ export default (sequelize, DataTypes) => {
 			unique: true,
 		},
 		password:{
-			type:DataTypes.STRING,
+			type:DataTypes.STRING
 		},
+		is_logged_in:{
+			type:DataTypes.BOOLEAN
+		},
+		
+		is_banned:{
+			type:DataTypes.BOOLEAN
+		},
+		role:{
+			type:DataTypes.INTEGER
+		}
 	});
 
 		return User;
