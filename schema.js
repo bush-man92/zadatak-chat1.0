@@ -37,10 +37,11 @@ export default gql`
     	register(username: String!, password: String!, email: String!): String!
     	login(username: String, password: String, used_token: String): String!
     	logout(logged_token: String!): String!
-    	updateUser(username: String!, newUsername: String, password: String!, newPassword: String, token: String!): String
+    	updateUser(username: String, newUsername: String, password: String, newPassword: String, token: String!): [String]
     	deleteUser(id: Int!): Int!
 		addMessage(text: String!, token: String!, chatroomId: String!): Message
 		banUser(token: String!, username: String!): String!
+		validToken(token: String!): String
 	}
 
 	type Subscription {

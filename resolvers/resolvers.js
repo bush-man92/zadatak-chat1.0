@@ -1,5 +1,5 @@
 import { addMessage , messageAdded, messages } from './subscriptions-resolver';
-import { allUsers, getUser, updateUser, deleteUser, register, login, logout, banUser } from './user-resolvers'
+import { allUsers, getUser, updateUser, deleteUser, register, login, logout, banUser, validToken} from './user-resolvers'
 
 const resolvers = {
 	Query: {
@@ -15,7 +15,8 @@ const resolvers = {
 		register,
 		login,
 		logout,
-		banUser
+		banUser,
+		validToken
 	},
 	Subscription: {
 		messageAdded
