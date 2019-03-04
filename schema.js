@@ -45,7 +45,7 @@ export default gql`
 	}
 
 	type Subscription {
-		messageAdded(chatroomId: String): Message
+		messageAdded(chatroomId: String!): Message
 	}
 
 	schema {

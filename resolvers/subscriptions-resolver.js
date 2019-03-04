@@ -8,11 +8,20 @@ const one = '1'
 
 
 const messageAdded = {
- 
-  subscribe: withFilter(() => pubsub.asyncIterator(one),
-  (payload, {chatroomId} ) => payload.chatroomId === chatroomId
-)
+  resolve: (payload, args, context, info) => {
+    return payload.messageAdded;
+  },
+  subscribe: withFilter( () => pubsub.asyncIterator(one), (payload, args) => { payload.messageAdded.chatroomId === args.chatroomId} )
 };
+
+/*const messageAdded = {
+  subscribe: withFilter(
+    () => pubsub.asyncIterator(one),
+    (payload, args) => {
+      return payload.messageAdded.chatroomId === args.chatroomId
+    }
+  ),
+};*/
 
 const addMessage = async (parent, { text, chatroomId, token }, { models, SECRET }) =>{
   const token_check = await jwt.verify(token, SECRET);
@@ -30,8 +39,7 @@ const addMessage = async (parent, { text, chatroomId, token }, { models, SECRET 
       return {};
     });
 
-  pubsub.publish(one, { 
-    chatroomId: chatroomId,
+  pubsub.publish(one, {
     messageAdded: message });
   return message;
 }
