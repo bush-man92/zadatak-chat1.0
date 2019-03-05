@@ -1,5 +1,4 @@
 import gql  from 'graphql-tag';
-import jwt from 'jsonwebtoken';
 
 export default gql`
 
@@ -28,7 +27,7 @@ export default gql`
 	type Query {
 		allUsers: [User!]!
 		getUser(username: String, id: Int): User!
-		messages(chatroomId:String): [Message]
+		messages(chatroomId:String!): [Message]
 		users(chatroomId:Int): [User]
 		user(id:Int, search:String):User
 	}

@@ -4,14 +4,14 @@ import jwt from 'jsonwebtoken';
 import { PubSub, withFilter } from 'graphql-subscriptions';
 
 const pubsub = new PubSub();
-const one = '1'
+const one = '2'
 
 
 const messageAdded = {
   resolve: (payload, args, context, info) => {
     return payload.messageAdded;
   },
-  subscribe: withFilter( () => pubsub.asyncIterator(one), (payload, args) => { payload.messageAdded.chatroomId === args.chatroomId} )
+  subscribe: withFilter( () => pubsub.asyncIterator(one), (payload, args) => { return payload.messageAdded.chatroomId === args.chatroomId} )
 };
 
 /*const messageAdded = {
@@ -46,7 +46,7 @@ const addMessage = async (parent, { text, chatroomId, token }, { models, SECRET 
 
 
 const messages = (parent, { chatroomId }, { models })=>{
-  return models.Message.findAll();
+  return models.Message.findAll( {where: {chatroomId: chatroomId}});
 }
 
 export { addMessage, pubsub, messageAdded, messages };
