@@ -61,7 +61,13 @@ const banUser = async (parent, { username, token}, { models, SECRET }) => {
 		};
 
 const validToken = async (parent, { token }, { models, SECRET }) => {
-			const check_token = await jwt.verify(token, SECRET);
+			const check_token = await jwt.verify(token, SECRET)
+			.catch((error) => {
+				return "False"
+			  })
+			if (!check_token) {
+				return "False"
+			}
 			const user = await models.User.findOne({ where: { id : check_token.user.id } })
 			if (user.is_logged_in) {
 				return "True"
