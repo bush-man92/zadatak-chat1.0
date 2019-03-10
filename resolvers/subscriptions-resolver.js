@@ -23,15 +23,18 @@ const messageAdded = {
   ),
 };*/
 
-const addMessage = async (parent, { text, chatroomId, token }, { models, SECRET }) =>{
+const addMessage = async (parent, { text, chatroomId, token, createdAt }, { models, SECRET }) =>{
   const token_check = await jwt.verify(token, SECRET);
   const user_Id = token_check.user.id
   const user = await models.User.findOne({ where: {id: user_Id } });
+  const time = await models.Message.findOne({ where :{ createdAt} });
+  console.log(time);
 
   const message = await models.Message.create({
     text: text,
     chatroomId: chatroomId,
-    username: user.username
+    username: user.username,
+    createdAt: time
   })
     .then((data) => JSON.parse(JSON.stringify(data)))
     .catch((error) => {

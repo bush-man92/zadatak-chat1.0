@@ -20,14 +20,14 @@ export default gql`
 		id: Int!
 		text: String!
 		chatroomId: String!
-		username: String
-		createdAt: String
+		username: String!
+		createdAt: String!
 	}
 
 	type Query {
 		allUsers: [User!]!
 		getUser(username: String, id: Int): User!
-		messages(chatroomId:String!): [Message]
+		messages(chatroomId:String!): [Message!]
 		users(chatroomId:Int): [User]
 		user(id:Int, search:String):User
 	}
