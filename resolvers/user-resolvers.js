@@ -61,7 +61,13 @@ const banUser = async (parent, { username, token}, { models, SECRET }) => {
 		};
 
 const validToken = async (parent, { token }, { models, SECRET }) => {
-			const check_token = await jwt.verify(token, SECRET);
+			const check_token = await jwt.verify(token, SECRET)
+			.catch((error) => {
+				return "False"
+			  })
+			if (!check_token) {
+				return "False"
+			}
 			const user = await models.User.findOne({ where: { id : check_token.user.id } })
 			if (user.is_logged_in) {
 				return "True"
@@ -100,6 +106,7 @@ const login = async (parent, { username, password, used_token } ,{ models, SECRE
 					return 'Logged in'
 				}
 			}
+			
 			const user = await models.User.findOne({ where: { username } });
 			if (!user) {
 				return ('There is no user with that username');
@@ -114,7 +121,8 @@ const login = async (parent, { username, password, used_token } ,{ models, SECRE
 				return ('Incorrect password');
 			}
 
-			user.is_logged_in = true;
+			models.User.update({is_logged_in : true},
+				{ where: { username: user.username } })
 			const token = jwt.sign(
 			{ user: _.pick(user, ['id', 'role', 'is_logged_in'])}, SECRET, {expiresIn: '1d' });
 
@@ -125,7 +133,8 @@ const logout = async (parent, { logged_token } , {models, SECRET}) => {
 			const logged_token_check = await jwt.verify(logged_token, SECRET);
 			const user = await models.User.findOne({ where: { id : logged_token_check.user.id } })
 
-			user.is_logged_in = false;
+			models.User.update({is_logged_in : false},
+				{ where: { username: user.username } })
 			const token = jwt.sign(
 			{ user: _.pick(user, ['id', 'role', 'is_logged_in'])}, SECRET, {expiresIn: '1d' });
 
