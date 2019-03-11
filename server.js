@@ -33,7 +33,7 @@ const addUser = async (req) =>{
 };
 
 app.use(cors('*'));
-//app.use(addUser);
+// app.use(addUser);
 
 app.use(
   '/graphql',

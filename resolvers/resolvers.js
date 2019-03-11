@@ -1,11 +1,12 @@
-import { addMessage , messageAdded, messages } from './subscriptions-resolver';
-import { allUsers, getUser, updateUser, deleteUser, register, login, logout, banUser, validToken} from './user-resolvers'
+import { addMessage , messageAdded, messages, UserAdded } from './subscriptions-resolver';
+import { allUsers, getUser, updateUser, deleteUser, register, login, logout, banUser, validToken, userOverview } from './user-resolvers'
 
 const resolvers = {
 	Query: {
 		messages,
 		allUsers,
 		getUser,
+		userOverview
 	},
 	
 	Mutation: {
@@ -19,7 +20,8 @@ const resolvers = {
 		validToken
 	},
 	Subscription: {
-		messageAdded
+		messageAdded,
+		UserAdded
 	}
 };
 

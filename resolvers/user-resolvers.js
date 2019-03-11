@@ -11,6 +11,26 @@ const getUser = (parent , { username, id }, { models }) =>{
 			else if (id) {
 				return models.User.findOne({where:{ id } }) }
 		};
+
+const userOverview = async (parent, { id }, { models }) => {
+			const users = await models.User.findAll();
+			class userView {
+				constructor(username, id, is_logged_in) {
+					this.username = username;
+					this.id = id;
+					this.is_logged_in = is_logged_in
+				}
+			}
+			const user_views = []
+			users.forEach(element => {
+				if (id !== element.id) {
+					const user = new userView(element.username, element.id, element.is_logged_in)
+					user_views.push(user)
+				}
+			});
+			
+			return user_views;
+}
 		
 const updateUser = async (parent, { username, newUsername, password, newPassword, token }, { models, SECRET }) => {
 			const token_check = await jwt.verify(token, SECRET);
@@ -62,18 +82,18 @@ const banUser = async (parent, { username, token}, { models, SECRET }) => {
 
 const validToken = async (parent, { token }, { models, SECRET }) => {
 			const check_token = await jwt.verify(token, SECRET)
-			.catch((error) => {
-				return "False"
-			  })
-			if (!check_token) {
-				return "False"
-			}
 			const user = await models.User.findOne({ where: { id : check_token.user.id } })
+			class validToken {
+				constructor(response, id) {
+					this.response = response;
+					this.id = id;
+				}
+			}
 			if (user.is_logged_in) {
-				return "True"
+				return new validToken("True", check_token.user.id)
 			}
 			else {
-				return "False"
+				return new validToken("False", check_token.user.id)
 			}
 }
 
@@ -94,7 +114,8 @@ const register = async (parent, {username, password, email} ,{ models, SECRET}) 
 
 		  	const token = jwt.sign(
 				{ user: _.pick(user2, ['id', 'role', 'is_logged_in'])}, SECRET, {expiresIn: '1d' });
-  
+			/*await pubsub.publish("2", {
+				UserAdded: user.username});*/
 			return token;
 		};
 
@@ -124,21 +145,22 @@ const login = async (parent, { username, password, used_token } ,{ models, SECRE
 			models.User.update({is_logged_in : true},
 				{ where: { username: user.username } })
 			const token = jwt.sign(
-			{ user: _.pick(user, ['id', 'role', 'is_logged_in'])}, SECRET, {expiresIn: '30s' });
+			{ user: _.pick(user, ['id', 'role', 'is_logged_in'])}, SECRET, {expiresIn: '7d' });
+
+			/*await pubsub.publish("2", {
+				UserAdded: user.username});*/
 
 			return token;
 		};
 
 const logout = async (parent, { logged_token } , {models, SECRET}) => {
-			const logged_token_check = await jwt.verify(logged_token, SECRET);
-			const user = await models.User.findOne({ where: { id : logged_token_check.user.id } })
+			const token = await jwt.verify(logged_token, SECRET);
+			const user = await models.User.findOne({ where: { id : token.user.id } })
 
 			models.User.update({is_logged_in : false},
 				{ where: { username: user.username } })
-			const token = jwt.sign(
-			{ user: _.pick(user, ['id', 'role', 'is_logged_in'])}, SECRET, {expiresIn: '1d' });
 
-			return token;
+			return "Succesfull logout"
 };
 
-export {allUsers, getUser, updateUser, deleteUser, register, login, logout, banUser, validToken};
+export { allUsers, getUser, updateUser, deleteUser, register, login, logout, banUser, validToken, userOverview };

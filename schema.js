@@ -24,12 +24,24 @@ export default gql`
 		createdAt: String
 	}
 
+	type userView {
+		username: String!
+		id: Int!
+		is_logged_in: Boolean!
+	}
+
+	type validToken {
+		response: String!
+		id: Int!
+	}
+
 	type Query {
 		allUsers: [User!]!
 		getUser(username: String, id: Int): User!
 		messages(chatroomId:String!): [Message]
 		users(chatroomId:Int): [User]
 		user(id:Int, search:String):User
+		userOverview(id:Int!): [userView]
 	}
 
 	type Mutation {
@@ -40,11 +52,12 @@ export default gql`
     	deleteUser(id: Int!): Int!
 		addMessage(text: String!, token: String!, chatroomId: String!): Message
 		banUser(token: String!, username: String!): String!
-		validToken(token: String!): String
+		validToken(token: String!): validToken
 	}
 
 	type Subscription {
 		messageAdded(chatroomId: String!): Message
+		UserAdded: String!
 	}
 
 	schema {
