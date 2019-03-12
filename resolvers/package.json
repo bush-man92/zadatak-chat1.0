@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "server": "nodemon --exec babel-node server.js"
+    "server": "nodemon --exec babel-node server.js",
+    "start": "nodemon --exec babel-node server.js"
   },
   "repository": {
     "type": "git",
@@ -27,7 +28,6 @@
     "express": "^4.16.4",
     "express-graphql": "^0.7.1",
     "graphql": "^14.1.1",
-    "graphql-iso-date": "^3.6.1",
     "graphql-server-express": "^1.4.0",
     "graphql-subscriptions": "^1.0.0",
     "graphql-tag": "^2.10.1",

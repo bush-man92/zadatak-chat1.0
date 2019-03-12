@@ -8,7 +8,6 @@ import { PubSub } from 'graphql-subscriptions';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
 import { createServer } from 'http';
 import { execute, subscribe } from 'graphql';
-import { GraphQLDate, GraphQLTime,GraphQLDateTime} from 'graphql-iso-date';
 require('dotenv').config()
 
 import typeDefs from './schema'
@@ -34,7 +33,7 @@ const addUser = async (req) =>{
 };
 
 app.use(cors('*'));
-//app.use(addUser);
+// app.use(addUser);
 
 app.use(
   '/graphql',
