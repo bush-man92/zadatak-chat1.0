@@ -38,7 +38,7 @@
     "lodash": "^4.17.11",
     "mysql2": "^1.6.5",
     "nodemon": "^1.18.9",
-    "sequelize": "^4.42.0",
+    "sequelize": "^5.15.1",
     "subscriptions-transport-ws": "^0.9.15"
   },
   "devDependencies": {
