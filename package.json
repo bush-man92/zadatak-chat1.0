@@ -35,7 +35,7 @@
     "http": "0.0.0",
     "jsonwebtoken": "^8.4.0",
     "loadsh": "0.0.3",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "mysql2": "^1.6.5",
     "nodemon": "^1.18.9",
     "sequelize": "^4.42.0",
